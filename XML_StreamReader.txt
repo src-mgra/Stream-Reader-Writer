@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.IO;
+using System.Xml;
+
+namespace WbsRequest
+{
+ var stream = t.Result;
+ using (var reader = new StreamReader(stream))
+ {
+	 //responseValue = reader.ReadToEnd(); --> alle lesen
+	 for (i = 0; i <= 19;i++ )
+ 	{
+		 Orte[i,0]="";
+		 Orte[i, 1] = "";
+	 }
+	 ename = "";
+	 outList = "";
+	 XmlTextReader xmlreader = null;
+	 xmlreader = new XmlTextReader(stream);
+	 i=0;
+     while (xmlreader.Read())
+	{
+	 switch (xmlreader.NodeType)
+	 {
+	 case XmlNodeType.Element: // Der Knoten ist ein Element.
+		 ename=xmlreader.Name;
+		 break;
+
+	 case XmlNodeType.Text: //Anzeige des Textes in jedem der Elemente.
+		 if (ename == "postalcode")
+ 		 {
+			 i = i + 1;
+			 outList += xmlreader.Value + "?";
+			 Orte[i, 0] = xmlreader.Value;
+		 }
+		 if (ename == "name")
+		 {
+			 outList += xmlreader.Value + "|"; //letztes Element
+			 Orte[i, 1] = xmlreader.Value;
+		 }
+		 break;
+	 case XmlNodeType.EndElement: //Ende der Elementanzeige.
+		 //Console.Write("</" + xmlreader.Name);
+		 //Console.WriteLine(">");
+		 break;
+	 }
+ 	}
+ }
+
+
+//Ausgabe
+Response.Write(outList);
+Response.Write(Orte[1, 0] + " " + Orte[1, 1]);
+Response.Write(Orte[2, 0] + " " + Orte[2, 1]);
+}
