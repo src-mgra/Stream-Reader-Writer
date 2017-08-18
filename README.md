@@ -1,0 +1,2 @@
+# StreamRdWrt
+Beispielprojekt StreamReader / StreamWriter
